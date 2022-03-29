@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { render } from "react-dom";
+import { StrictMode } from "react";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import SearchParams from "./SearchParams";
+import Details from "./Details";
+import { useState } from "react";
+import ThemeContext from "./ThemeContext";
+import './style.css';
 
-function App() {
+
+const App = () => {
+  const theme = useState("grey")
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeContext.Provider value={theme}>
+      <div>
+        <Router>
+          <header>
+            <Link to="/">
+              <h1>Adopt Me!</h1>
+            </Link>
+          </header>
+          <Switch>
+            <Route path="/details/:id">
+              <Details />
+            </Route>
+            <Route path="/">
+              <SearchParams />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    </ThemeContext.Provider>
   );
-}
+};
 
-export default App;
+render(<StrictMode>
+  <App />
+</StrictMode>,
+  document.getElementById("root"));
+
+export default App
